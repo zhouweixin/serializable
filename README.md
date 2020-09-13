@@ -278,7 +278,7 @@ public int getOrdinal() {
 如前面提到的结果所示, teacher的两个属性并不在student的第一层, 
 有时可能会更深的层次, 使用起来不太友好
 
-如何用teacherName和teacherAge两个属性代替teacher呢?
+如何用teacher_name和teacher_age两个属性代替teacher呢?
 
 1. 在Student的teacher属性上添加注解JsonUnwrapped, 意为不包裹
 2. 在Teacher的属性上利用注解JsonProperty重命名
@@ -458,3 +458,56 @@ private Integer age;
 Student{name='小明', age=18, sex=MALE, fatherName='王富贵', bornTime=Sun Sep 13 20:51:31 CST 2020, teacher=Teacher{name='李老师', age=40}}
 Student{name='小花', age=16, sex=FEMALE, fatherName='钱很多', bornTime=Sun Sep 13 20:51:31 CST 2020, teacher=Teacher{name='赵老师', age=38}}
 ```
+
+## 11 注解JsonInclude
+
+该注解使用在实体类上, 格式`@JsonInclude(value = JsonInclude.Include.NON_DEFAULT)`
+
+其中, Include有7种参数, 功能对比如下
+
+|参数|功能|备注|
+|----|----|----|
+|Include.ALWAYS|属性总是序列化(需要有get方法)|默认值|
+|Include.NON_DEFAULT|属性为默认值不序列化|如: int:0, bool:false|
+|Include.NON_EMPTY|属性为空("")或null不序列化||
+|Include.NON_NULL|属性为null不序列化||
+|Include.CUSTOM|||
+|Include.USE_DEFAULTS|||
+|Include.NON_ABSENT|||
+
+### 代码示例
+Student.java
+```java
+@JsonInclude(value = JsonInclude.Include.NON_DEFAULT)
+public class Student {
+```
+
+```java
+public void testNonDefault() throws IOException {
+    Student student = new Student("", 0, null, null, null, null);
+    ObjectMapper mapper = new ObjectMapper();
+    String s = mapper.writeValueAsString(student);
+    System.out.println(s);
+}
+```
+
+### 示例输出
+```shell script
+{
+  "name" : "",
+  "age" : -7
+}
+```
+
+### 分析
+1. 当属性为默认值, 即零值时, 不序列化
+2. 常见的零值:
+    1. int: 0
+    2. bool: false,
+    3. String: null
+
+## 12 注解Transient
+
+## 13 注解JsonIgnore
+
+

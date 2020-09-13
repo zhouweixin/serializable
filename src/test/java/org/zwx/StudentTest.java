@@ -17,7 +17,7 @@ public class StudentTest extends TestCase {
         students.add(student2);
 
         ObjectMapper mapper = new ObjectMapper();
-        String s = mapper.writeValueAsString(students);
+        String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(students);
         System.out.println(s);
     }
 
@@ -35,5 +35,12 @@ public class StudentTest extends TestCase {
         for (Student student : students) {
             System.out.println(student);
         }
+    }
+
+    public void testNonDefault() throws IOException {
+        Student student = new Student("", 0, null, null, null, null);
+        ObjectMapper mapper = new ObjectMapper();
+        String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(student);
+        System.out.println(s);
     }
 }
