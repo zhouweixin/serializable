@@ -506,8 +506,24 @@ public void testNonDefault() throws IOException {
     2. bool: false,
     3. String: null
 
-## 12 注解Transient
+## 12 注解JsonIgnoreProperties
+
+该注解为类注解, 配置忽略序列化和反序列化的字段名
+如下所示, 忽略字段name和age
+
+```java
+@JsonIgnoreProperties(value = {"name", "age"})
+@JsonInclude(value = JsonInclude.Include.NON_DEFAULT)
+public class Student {
+```
 
 ## 13 注解JsonIgnore
+
+该注解为属性注解, 表示忽略当前属性, 如下所示, 表示忽略name字段
+
+```java
+@JsonIgnore
+private String name;
+```
 
 
